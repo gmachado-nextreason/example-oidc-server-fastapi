@@ -12,16 +12,22 @@ This is an example of OpenID Connect 1.0 server in [FastAPI](https://fastapi.tia
 This is a ready to run example, let's take a quick experience at first. To
 run the example, we need to install all the dependencies:
 
-    $ pip install -r requirements.txt
+```bash
+$ pip install -r requirements.txt
+```
 
 Set FastAPI and Authlib environment variables:
 
-    # disable check https (DO NOT SET THIS IN PRODUCTION)
-    $ export AUTHLIB_INSECURE_TRANSPORT=1
+```bash
+# disable check https (DO NOT SET THIS IN PRODUCTION)
+$ export AUTHLIB_INSECURE_TRANSPORT=1
+```
 
 Create Database and run the development server:
 
-    $ uvicorn main:app --host 127.0.0.1 --port 5000 --reload
+```bash
+$ uvicorn main:app --host 127.0.0.1 --port 5000 --reload
+```
 
 Now, you can open your browser with `http://127.0.0.1:5000/`.
 
@@ -33,13 +39,13 @@ Before testing, we need to create a client:
 
 Let's take `authorization_code` grant type as an example. Visit:
 
-```
-curl -i -XPOST http://127.0.0.1:5000/oauth/authorize?client_id=OQ5k5Xh8XtfE3ecybl4QdSg2&response_type=code&scope=openid+profile&nonce=abc -F uuid=XXXXXXX
+```bash
+$ curl -i -XPOST http://127.0.0.1:5000/oauth/authorize?client_id=${CLIENT_ID}&response_type=code&scope=openid+profile&nonce=abc -F uuid=XXXXXXX
 ```
 
 After that, you will be redirect to a URL. For instance:
 
-```
+```bash
 HTTP/1.1 100 Continue
 
 HTTP/1.1 302 Found
@@ -52,6 +58,12 @@ content-type: application/json
 
 Copy the code value, use `curl` to get the access token:
 
+```bash
+$ curl -u "${CLIENT_ID}:${CLIENT_SECRET}" -XPOST http://127.0.0.1:5000/oauth/token -F grant_type=authorization_code -F code=RSv6j745Ri0DhBSvi2RQu5JKpIVvLm8SFd5ObjOZZSijohe0 -F scope=profile
 ```
-curl -u "${CLIENT_ID}:${CLIENT_SECRET}" -XPOST http://127.0.0.1:5000/oauth/token -F grant_type=authorization_code -F code=RSv6j745Ri0DhBSvi2RQu5JKpIVvLm8SFd5ObjOZZSijohe0
+
+Now you can access `/oauth/userinfo`:
+
+```bash
+$ curl -H "Authorization: Bearer ${access_token}" http://127.0.0.1:5000/oauth/userinfo
 ```
