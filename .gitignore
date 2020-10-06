@@ -1,0 +1,5 @@
+*.db
+*.pyc
+.venv
+.vscode
+__pycache__
