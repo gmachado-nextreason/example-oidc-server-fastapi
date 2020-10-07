@@ -11,7 +11,7 @@ from authlib.oauth2.rfc7662 import IntrospectionEndpoint as _IntrospectionEndpoi
 from authlib.oidc.core.grants import OpenIDCode as _OpenIDCode
 from authlib.oidc.core import UserInfo
 from werkzeug.security import gen_salt
-from src.fastapi_oauth2 import AuthorizationServer, ResourceProtector
+from authlib.integrations.fastapi_oauth2 import AuthorizationServer, ResourceProtector
 from src.models import User
 from src.models import OAuth2Client, OAuth2AuthorizationCode, OAuth2Token
 from src.database import db
