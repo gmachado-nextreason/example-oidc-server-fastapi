@@ -17,7 +17,10 @@ app.config = {
     'OAUTH2_JWT_ALG': 'HS256',
     'OAUTH2_TOKEN_EXPIRES_IN': {
         'authorization_code': 300
-    }
+    },
+    'OAUTH2_ERROR_URIS': [
+        ('invalid_client', 'https://developer.your-company.com/errors#invalid-client'),
+    ]
 }
 
 @app.exception_handler(StarletteHTTPException)
