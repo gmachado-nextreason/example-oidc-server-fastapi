@@ -13,6 +13,7 @@ from src.database import Base
 
 class User(Base):  # pylint: disable=R0903
     '''User class example'''
+
     __tablename__ = 'user'
 
     id = Column(Integer, primary_key=True)
@@ -25,6 +26,7 @@ class User(Base):  # pylint: disable=R0903
 
 class OAuth2Client(Base, OAuth2ClientMixin):
     '''OAuth2Client class example'''
+
     __tablename__ = 'oauth2_client'
 
     id = Column(Integer, primary_key=True)
@@ -32,6 +34,7 @@ class OAuth2Client(Base, OAuth2ClientMixin):
 
 class OAuth2AuthorizationCode(Base, OAuth2AuthorizationCodeMixin):
     '''OAuth2AuthorizationCode class example'''
+
     __tablename__ = 'oauth2_code'
 
     id = Column(Integer, primary_key=True)
@@ -44,6 +47,7 @@ class OAuth2AuthorizationCode(Base, OAuth2AuthorizationCodeMixin):
 
 class OAuth2Token(Base, OAuth2TokenMixin):
     '''OAuth2Token class example'''
+
     __tablename__ = 'oauth2_token'
 
     id = Column(Integer, primary_key=True)

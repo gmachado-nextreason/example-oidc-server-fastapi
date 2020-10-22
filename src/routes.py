@@ -95,14 +95,31 @@ def authorize(
 def token(
         request: Request,
         grant_type: str = Form(...),
-        scope: str = Form(...),
-        code: str = Form(...)):
+        scope: str = Form(None),
+        code: str = Form(None),
+        refresh_token: str = Form(None),
+        code_verifier: str = Form(None),
+        client_id: str = Form(None),
+        client_secret: str = Form(None)):
     '''Exchange the authorization code to access token'''
     request.body = {
         'grant_type': grant_type,
         'scope': scope,
-        'code': code
     }
+    if grant_type == 'authorization_code':
+        request.body['code'] = code
+    elif grant_type == 'refresh_token':
+        request.body['refresh_token'] = refresh_token
+
+    if code_verifier:
+        request.body['code_verifier'] = code_verifier
+
+    if client_id:
+        request.body['client_id'] = client_id
+
+    if client_secret:
+        request.body['client_secret'] = client_secret
+
     return authorization.create_token_response(request=request)
 
 
@@ -112,10 +129,14 @@ def introspect_token(
         token: str = Form(...),  # pylint: disable=W0621
         token_type_hint: str = Form(...)):
     '''Introspect the token using access token'''
-    request.body = {
-        'token': token,
-        'token_type_hint': token_type_hint
-    }
+    request.body = {}
+
+    if token:
+        request.body.update({'token': token})
+
+    if token_type_hint:
+        request.body.update({'token_type_hint': token_type_hint})
+
     return authorization.create_endpoint_response('introspection', request=request)
 
 
@@ -125,10 +146,14 @@ def revoke_token(
         token: str = Form(...),  # pylint: disable=W0621
         token_type_hint: str = Form(...)):
     '''Revoke the token using access token'''
-    request.body = {
-        'token': token,
-        'token_type_hint': token_type_hint
-    }
+    request.body = {}
+
+    if token:
+        request.body.update({'token': token})
+
+    if token_type_hint:
+        request.body.update({'token_type_hint': token_type_hint})
+
     return authorization.create_endpoint_response('revocation', request=request)
 
 

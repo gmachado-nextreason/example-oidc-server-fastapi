@@ -43,6 +43,7 @@ def generate_user_info(user, scope):
 
 class AuthorizationCodeGrant(grants.AuthorizationCodeGrant):
     '''AuthorizationCodeGrant class'''
+
     def generate_authorization_code(self):
         return gen_salt(48)
 
@@ -60,7 +61,7 @@ class AuthorizationCodeGrant(grants.AuthorizationCodeGrant):
         db.commit()  # pylint: disable=E1101
 
     def query_authorization_code(self, code, client):  # pylint: disable=R1710
-        '''Parse the authorization code'''
+        '''Query the authorization code'''
         item = db.query(OAuth2AuthorizationCode).filter(  # pylint: disable=E1101
             OAuth2AuthorizationCode.code == code,
             OAuth2Client.client_id == client.client_id).first()
@@ -78,6 +79,7 @@ class AuthorizationCodeGrant(grants.AuthorizationCodeGrant):
 
 class RefreshTokenGrant(grants.RefreshTokenGrant):
     '''RefreshTokenGrant class'''
+
     def authenticate_refresh_token(self, refresh_token):  # pylint: disable=R1710
         token = db.query(OAuth2Token).filter(  # pylint: disable=E1101
             OAuth2Token.refresh_token==refresh_token).first()
@@ -96,6 +98,7 @@ class RefreshTokenGrant(grants.RefreshTokenGrant):
 
 class IntrospectionEndpoint(_IntrospectionEndpoint):
     '''IntrospectionEndpoint class'''
+
     def query_token(self, token, token_type_hint, client):  # pylint: disable=R1710
         if token_type_hint == 'access_token':
             tok = db.query(OAuth2Token).filter(  # pylint: disable=E1101
@@ -130,6 +133,7 @@ class IntrospectionEndpoint(_IntrospectionEndpoint):
 
 class OpenIDCode(_OpenIDCode):
     '''OpenIDCode class'''
+
     def exists_nonce(self, nonce, request):
         return exists_nonce(nonce, request)
 
